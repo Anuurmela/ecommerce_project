@@ -1,0 +1,13 @@
+config {
+  type: "table",
+  schema: "silver_layer",
+  name: "products"
+}
+
+SELECT DISTINCT
+  product_id,
+  case when product_category_name is null then 'NA'
+  else product_category_name
+  end as product_category
+FROM ${ref({schema: "bronze_layer", name: "products"})}
+WHERE product_id IS NOT NULL

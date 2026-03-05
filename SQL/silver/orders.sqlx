@@ -1,0 +1,14 @@
+config {
+  type: "table",
+  schema: "silver_layer",
+  name: "orders"
+}
+
+SELECT DISTINCT
+  order_id,
+  customer_id,
+  CAST(order_purchase_timestamp AS DATE) AS order_date
+FROM ${ref({schema:"bronze_layer",name:"orders"})}
+WHERE order_status = 'delivered'
+  AND order_id IS NOT NULL
+  AND customer_id IS NOT NULL

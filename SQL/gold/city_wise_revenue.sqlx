@@ -1,0 +1,18 @@
+config {
+    type: "table",
+    schema: "gold_layer",
+    name: "city_wise_revenue"
+}
+
+SELECT CU.CUSTOMER_CITY, DATE_TRUNC(O.ORDER_DATE,MONTH)as YEAR_MONTH, COUNT (DISTINCT CU.CUSTOMER_ID)AS TOTAL_USERS,
+		SUM(oi.price + oi.freight_value) as total_revenue,
+	COUNT(distinct o.order_id)as total_orders from 
+${ref({schema:"silver_layer",name:"customers"})} cu
+JOIN
+${ref({schema:"silver_layer",name:"orders"})} o 
+ON (cu.customer_id = o.customer_id)
+JOIN
+${ref({schema:"silver_layer",name:"order_items"})} oi
+ON (o.order_id = oi.order_id)
+GROUP BY 1,2
+ORDER BY TOTAL_USERS DESC

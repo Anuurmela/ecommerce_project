@@ -1,0 +1,15 @@
+config {
+  type: "table",
+  schema: "silver_layer",
+  name: "order_items"
+}
+
+SELECT DISTINCT
+  TRIM(oi.order_id) AS order_id,
+  oi.product_id,
+  oi.price,
+  oi.freight_value
+FROM ${ref({schema:"bronze_layer", name: "order_items"})} oi
+JOIN ${ref({schema:"silver_layer", name: "orders"})} o
+  ON TRIM(oi.order_id) = TRIM(o.order_id)
+WHERE oi.price >= 0

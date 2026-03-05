@@ -1,0 +1,17 @@
+config {
+    type: "table",
+    schema: "gold_layer",
+    name: "customer_lifetime_value"
+}
+
+SELECT
+	o.customer_id, 
+	SUM (oi.price + oi.freight_value)as total_revenue,
+	COUNT(DISTINCT o.order_id)as total_orders,
+	MIN(o.order_date)as first_purchase_date,
+	MAX(o.order_date)as last_purchase_date
+FROM ${ref({schema:"silver_layer",name:"orders"})} as o
+JOIN ${ref({schema:"silver_layer",name:"order_items"})} as oi
+ON (o.order_id= oi.order_id)
+GROUP BY 1
+ORDER BY total_revenue DESC

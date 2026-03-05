@@ -1,0 +1,32 @@
+config {
+    type: "table",
+    schema: "gold_layer",
+    name: "monthly_revenue_orders"
+}
+
+
+
+select
+date_trunc(o.order_date,MONTH) as year_month,
+	SUM(oi.price + oi.freight_value) as total_revenue,
+	COUNT(distinct o.order_id)as total_orders
+	from 
+(
+	select 
+	distinct
+	order_id,
+	order_date
+	from 
+	${ref({schema:"silver_layer",name:"orders"})}
+	
+)as o
+join 
+(
+select
+*
+from
+${ref({schema:"silver_layer",name:"order_items"})}
+)as oi
+on (o.order_id = oi.order_id)
+GROUP BY 1
+ORDER BY 1

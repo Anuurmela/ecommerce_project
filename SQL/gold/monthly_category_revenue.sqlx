@@ -1,0 +1,16 @@
+config {
+    type: "table",
+    schema: "gold_layer",
+    name: "monthly_category_revenue"
+}
+
+SELECT DATE_TRUNC(o.order_date,MONTH)as YEARMONTH, p.product_category, 
+	SUM (oi.price + oi.freight_value)as total_revenue, 
+	COUNT (DISTINCT o.order_id)as total_orders
+FROM ${ref({schema:"silver_layer",name:"orders"})} o
+JOIN ${ref({schema:"silver_layer",name:"order_items"})} oi
+ON (o.order_id = oi.order_id)
+JOIN ${ref({schema:"silver_layer",name:"products"})} p
+ON (oi.product_id = p.product_id)
+GROUP BY 1,2
+ORDER BY 1, total_revenue DESC

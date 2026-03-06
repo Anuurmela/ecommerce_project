@@ -5,7 +5,7 @@ This project demonstrates an end-to-end analytics engineering workflow using Goo
 
 ## 🧱Architecture Overview
 
-![alt text](workflow_flow.png)
+![alt text](utilities/flow_chart.PNG)
 
 ## 🟤Bronze Layer — Raw Data Ingestion
 
@@ -117,14 +117,14 @@ Gold objects are created as tables/views under the gold schema and are designed 
 
 - City wise revenue and orders
 
-! ![alt text](image-1.png)
+! ![alt text](utilities/city_wise.png)
 
 - Monthly revenue and orders with product category drill down
 
- ![alt text](image.png)
+ ![alt text](utilities/month_wise.png)
 
 
-![alt text](image-2.png)
+![alt text](utilities/month_wise_drill_down.png)
 
 
 ### 🛠 Tech Stack
